@@ -1,7 +1,7 @@
 --jLinuxInstaller.scpt DOES NOT work fully yet
 --Due to the fact that .app files are actually folders, getting them with cURL does not work
 --This will be fixed later but isn't a high priority right now
---
+-- 
 -- (c) 2016 Brendan Manning
 -- MIT Liscense
 display dialog "jLinux Quick Installer..." with title "Install jLinux" buttons {"Install", "Quit"} default button 1
