@@ -5,7 +5,7 @@ What is jLinux? - jLinux provides a Linux-styled command line interface for user
 Why use jLinux? - There are serveral reasons ;)
   + No need for any external programs or libraries, jLinux only needs Java and a terminal.
   + (Windows users) Use a simple Linux enviroment without Cygwin.
-  + Still use your operating system and file setup! jLinux stores all it's data in a folder named 'hdd' inside your user folder
+  + Still use your operating system and file setup! jLinux stores all it's data in a folder named 'hdd' inside your user folder (or desktop folder)
       ++ (You also have to install the program somewhere, but hopefully you know that!!)
 
 What commands does jLinux have?
