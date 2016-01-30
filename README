@@ -8,4 +8,25 @@ Why use jLinux? - There are serveral reasons ;)
   + Still use your operating system and file setup! jLinux stores all it's data in a folder named 'hdd' inside your user folder
       ++ (You also have to install the program somewhere, but hopefully you know that!!)
 
-  
+What commands does jLinux have?
+  - cd : Change directory
+  - mkdir : Make directory
+  - ls : List contents of current working directory
+  - vinf : Vi new file (Creates new text file and let's you edit it)
+  - dl : Equivalent of wget and cURL.
+  - echo : Returns entered text or system parameters ($OS or $VERSION)
+  - quit : Obviously ;)
+  - help : Help pages being added for many programs
+
+How can I support jLinux? 
+  - Tell your friends!
+
+How is jLinux liscensed?
+  - jLinux is released under the MIT Liscense, although future "pro" versions with extra features may be liscensed differently. 
+  - Users are permitted to distibute and modify jLinux source code as long as it follows the MIT Liscense.
+  - However, I ask that if jLinux is useful to you, remember to take a break before you forget what sunlight feels like!
+
+jLinux Credits - 
+  + Various code adapted from various StackOverflow posts
+  + Much of the code for 'dl' has been taken from Alvin Alexander's post at [[http://alvinalexander.com/blog/post/java/jget-something-like-wget]]
+  + Brendan Manning (developer)
