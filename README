@@ -28,5 +28,5 @@ How is jLinux liscensed?
 
 jLinux Credits - 
   + Various code adapted from various StackOverflow posts
-  + Much of the code for 'dl' has been taken from Alvin Alexander's post at [[http://alvinalexander.com/blog/post/java/jget-something-like-wget]]
+  + Much of the code for 'dl' has been taken from Alvin Alexander's post at [[ http://alvinalexander.com/blog/post/java/jget-something-like-wget ]]
   + Brendan Manning (developer)
