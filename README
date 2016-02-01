@@ -1,3 +1,7 @@
+##############################################################################################################################
+IMPORTANT: This code is for jLinux 1 (before the transition to jlinux.net as the primary content server. To download a working
+version of jLinux, please visit https://www.jlinux.net/home 
+##############################################################################################################################
 jLinux: A realistic java emulator for any Java compadible operating system.
 
 What is jLinux? - jLinux provides a Linux-styled command line interface for users of Macintosh, Windows, and yes Linux itself. 
