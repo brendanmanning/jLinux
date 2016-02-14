@@ -1,13 +1,9 @@
 
 /**
  * Write a description of class dl here.
- *  
+ * 
  * @author (Brendan Manning) 
  * @version (Version 0.0.1 - As of 1/28/16)
- * This code has been adapted from code by Alvin Alexander
- * See this website for his source code:
- * http://alvinalexander.com/blog/post/java/jget-something-like-wget
- * or go to the README
  */
 import java.io.*;
 import java.nio.*;
@@ -32,6 +28,14 @@ public class dl
             System.out.println("dl <direct file url>");
             return false;
         }
+        if(!url.startsWith("http://")) {
+            if(!url.startsWith("https://")) {
+                if(!url.startsWith("ftp://")) {
+                    url = "http://" + url;
+                    System.out.println("[ info ] No protocol was specified for that file. Assumming HTTP!");
+                }
+            }
+        }
         if(url == null) { //do the same here, but for null values
             return false;
         }
@@ -43,6 +47,7 @@ public class dl
         try {
           u = new URL(url);
         } catch (java.net.MalformedURLException mfue) {
+            System.out.println("Download failed!!");
             return false;
         }
         InputStream i = null;
@@ -54,17 +59,20 @@ public class dl
         try {
             rbc = Channels.newChannel(u.openStream());
         } catch (java.io.IOException exception) {
+            System.out.println("Download failed!!");
             return false;
         }
         FileOutputStream fos;
         try {
         fos = new FileOutputStream(newFileName);
     } catch (java.io.FileNotFoundException fnfe){
+        System.out.println("Download failed!!");
         return false;
     }
         try {   
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         } catch (java.io.IOException ioioioeeee) {
+            System.out.println("Download failed!!");
             return false;
         }
         
