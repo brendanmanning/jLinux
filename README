@@ -1,6 +1,7 @@
 ##############################################################################################################################
-IMPORTANT: This code is for jLinux 1 (before the transition to jlinux.net as the primary content server. To download a working
-version of jLinux, please visit https://www.jlinux.net/home 
+IMPORTANT: While reading source code is great, I suggest downloading the binary Windows installer from https://jlinux.net, or
+by using the lastest jLinux JAR file (also found at https://jlinux.net and starting it in a shell with: 
+java -jar <jLinux Jar Location>
 ##############################################################################################################################
 jLinux: A realistic java emulator for any Java compadible operating system.
 
@@ -21,6 +22,9 @@ What commands does jLinux have?
   - echo : Returns entered text or system parameters ($OS or $VERSION)
   - quit : Obviously ;)
   - help : Help pages being added for many programs
+  - addapp : jLinux Package Manager
+  - listapps : returns all apps installed via 'addapp'
+  - cp : copy command
 
 How can I support jLinux? 
   - Tell your friends!
