@@ -55,4 +55,9 @@ public class help
         System.out.println("dl - Troubleshooting: URLs cannot contain any parameters '?' symbols. Remove them if possible.");
         System.out.println("#############END dl Help Page###############");
     }
+    public static void addappHelp() {
+        System.out.println("addapp (Package Manager Utility) - Syntax: addapp <app name>");
+        System.out.println("addapp - Troubleshooting: If an app fails to download, make sure you have internet connection, and that the app exists");
+        System.out.println("addapp - Troubleshooting: To remove an app manually, delete it from the applications folder in your jLinux directory");
+    }
 }
