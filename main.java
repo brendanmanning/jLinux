@@ -36,6 +36,7 @@ public class main
             System.out.println("----> mkdir");
             System.out.println("----> dl");
             System.out.println("----> vinf");
+            System.out.println("----> addapp");
         }
         if(arg.equals("cd")) {
             help.cdHelp();
@@ -47,6 +48,8 @@ public class main
             help.dlHelp();
         } else if(arg.equals("vinf")) {
             help.vinfHelp();
+        } else if(arg.equals("addapp")) {
+            help.addappHelp();
         } else {
             System.out.println("Command " + arg + " not found. Run help * to list all commands");
         }
@@ -182,6 +185,7 @@ public class main
     public static boolean _doSetup(String baseDir) {
         File hddLocation = new File(System.getProperty("user.dir") + File.separator + "hdd");
         File downloadsFolder = new File(System.getProperty("user.dir") + File.separator + "hdd" + File.separator + "downloads" + File.separator); 
+        File appsFolder = new File(System.getProperty("user.dir") + File.separator + "hdd" + File.separator + "applications" + File.separator); 
         if (hddLocation.exists()) {
            //hdd folder exists
            System.out.println("[ ok ] HDD data folder exists!");
@@ -197,15 +201,39 @@ public class main
             //downloads folder did not exist so it was created
             System.out.println("[ debug ] User downloads folder was missing, so it was created!");
         }
+        if(appsFolder.exists()) {
+            System.out.println("[ ok ] Applications folder exists");
+        } else {
+            appsFolder.mkdir();
+            System.out.println("[ debug ] Applications folder was missing, so it has been created!");
+        }
         return true; 
     }
     public static String _shell(String wd) {
-        Scanner i = new Scanner(System.in);
-        System.out.print(System.getProperty("user.name") + "@jLinux: " + wd + "$ ");
-        String command = i.nextLine();
-        return command;
+            
+              Scanner i = new Scanner(System.in);
+              System.out.print(System.getProperty("user.name") + "@jLinux: " + wd + "$ ");
+              String command = i.nextLine();
+              return command;
+             
+    }
+    //static int shellEnabled = 1;
+    public static Boolean _enableShell(Boolean e) {
+        if(e == true) {
+            //shellEnabled = 1;
+            //enable shell prompt
+            return true;
+        }
+        if(e == false) {
+            //shellEnabled = 0;
+            return false;
+        }
+        return true; 
+        //always return true, although this return statement should never be reached
     }
     public static void main(String[] args) throws java.lang.ArrayIndexOutOfBoundsException {
+        //setShellVar();
+        
         //initilize core host system vars
         System.out.println("Booted Successfully!");
         System.out.println("Checking if system set up");
@@ -213,7 +241,7 @@ public class main
         String os = System.getProperty("os.name");
         boolean isSetup = _doSetup(baseDir);
         System.out.println("All good!");
-        System.out.println("----{jLinux 1.1}----");
+        System.out.println("----{" + jLinuxInfo.version() + "}----");
         System.out.println("");
         System.out.println("::::::::Need Help?::::::::");
         System.out.println("Run help * to list all commands, or help + command name to get command specific help");
@@ -239,6 +267,26 @@ public class main
             cmd = "ls";
             arg = "";
             foundCommand = 1;
+        } else if(c.toLowerCase().startsWith("cp")) {
+            cmd = "cp";
+            arg = "";
+            String origin, dest;
+            String[] a = new String[2];
+            a = c.split(" "); //split on whitespace
+            try {
+                origin = a[1]; //second word (the first parameter bc the command is the first, would be [1] in the array
+                dest = a[2]; //third index is the second arg
+                cp.copy(origin, dest,wd);
+                foundCommand = 1;
+            } catch (ArrayIndexOutOfBoundsException arioobe) {
+                foundCommand = 1;
+                System.out.println("Invalid number of arguments for 'cp'");
+            }
+        } else if (c.toLowerCase().startsWith("listapp")) {
+            cmd = "listapps";
+            arg = "";
+            foundCommand = 1;
+            listapps.list();
         } else {
            String[] a = new String[2];
          a[1] = "";
@@ -248,7 +296,7 @@ public class main
           arg = a[1];
          } catch (java.lang.IndexOutOfBoundsException eee) {
            arg = "";
-           System.out.println("[ info ] Found no command arguments, setting the argument value to empty");
+           //System.out.println("[ info ] Found no command arguments, setting the argument value to empty");
          }
          
         
@@ -298,8 +346,16 @@ public class main
                 System.out.println("Download Failed!");
             }
         }
+        if(cmd.toLowerCase().equals("addapp")) {
+            addapp.install(arg);
+            foundCommand = 1;
+        }
         if(foundCommand == 0) { //if no command above matches
-            System.out.println("The program '" + cmd + "' does not exist");
+                if(loadApp.run(cmd.toLowerCase(), baseDir) == true) {
+                    //do nothing, the program will run by itself
+                } else {
+                    System.out.println("The program '" + cmd + "' does not exist");
+                }
         }
         }
         System.exit(0); 
