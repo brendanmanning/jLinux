@@ -60,4 +60,37 @@ public class help
         System.out.println("addapp - Troubleshooting: If an app fails to download, make sure you have internet connection, and that the app exists");
         System.out.println("addapp - Troubleshooting: To remove an app manually, delete it from the applications folder in your jLinux directory");
     }
+    public static void cpHelp() {
+        System.out.println("cp (copy command) - Syntax: cp <original file location> <duplicate file location>");
+        System.out.println("cp - Troubleshooting: If a file fails to copy, ensure that you are reffering to it with a relative path, not an absolute path");
+    }
+    public static void echoHelp() {
+        System.out.println("echo (repeats text or return system property) - Syntax: echo <text to repeat> OR echo <$OS/$VERSION> to return system properties");
+        System.out.println("echo - Troubleshooting: If you are unable to echo a system property, ensure that you input a '$' (dollar) sign before the property (either OS or VERSION)");
+    }
+    public static void updateHelp() {
+        System.out.println("update (gives instructions on how to update jLinux) - Syntax: update");
+    }
+    public static void listappsHelp() {
+        System.out.println("listapps (Lists all appstore installed JARs) - Syntax: listapps");
+        System.out.println("listapps: Troubleshooting - Ensure that your applications folder exists and any apps you want are inside and have not been modified");
+    }
+    public static void daemonHelp() {
+       System.out.println("daemon (Live Updates) - Syntax daemon");
+       System.out.println("*daemons are appstore commands that are configured to run ever 2 minutes. They accept no input and are designed to keep you updated on the things/information you care about!");
+       System.out.println("**If daemons do not run, make sure they are enabled by re-running setup and choosing 'y' at the live updates prompt");
+       System.out.println("***Also, ensure that apps are added in the daemon-m.jLinuxBoolean file located at: " + jLinuxInfo.configLocation() + "dameon-m.jLinuxBoolean");
+       System.out.println("****To easily add a daemon, run the 'daemon' command and type the name of the app store command you want to add! Unlimited numbers of daemons can be configured!");
+       System.out.println("*****Dameons are new to jLinux, so they may be buggy for a little while until everything is sorted out! However, live updates has already been heavily tested, and has performed great!");
+    }
+    public static void setupHelp() {
+        System.out.println("setup (Deletes and reconfigures jLinux preferences) - Syntax: setup");
+        System.out.println("Instructions: follow the prompts to reconfigure jLinux!");
+        System.out.println("* The setup command removes files and preferences from you .config folder. All jLinux preferences will be removed!");
+    }
+    public static void nukeHelp() {
+        System.out.println("nuke (deletes all jLinux files and preferences) - Syntax: nuke");
+        System.out.println("WARNING: nuke deletes ALL files and folders inside you jLinux 'hdd' folder! jLinux and it's developers are not reponsible for any damages that may be caused!");
+        System.out.println("* nuke does not uninstall jLinux. To do so, remove the jLinux application directory/jar file from you computer!");
+    }
 }
