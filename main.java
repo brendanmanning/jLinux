@@ -16,6 +16,39 @@ import java.nio.*;
 import java.lang.*;
 public class main
 {
+    //declare working directory string first
+    public static String wd = null;
+    /* next create a method to return the wd variable to any class that wants it */
+    public static String getwd() {
+        return wd;
+    }
+    /* code for delete functions taken from: http://stackoverflow.com/questions/7768071/how-to-delete-directory-content-in-java */
+    public static void deleteContents(File path) {
+        File[] files = path.listFiles();
+        if(files != null) {
+            for (File f: files) {
+                if(f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
+        }
+    }
+    public static void deleteFolder(File path) {
+        File[] files = path.listFiles();
+        if(files != null) {
+            for (File f: files) {
+                if(f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
+        }
+        //finally, delete the folder itself
+        path.delete();
+    }
     public static String _cleanArg(String arg) {
                 if(!arg.endsWith(File.separator)) {
                     arg = arg + File.separator;
@@ -37,8 +70,12 @@ public class main
             System.out.println("----> dl");
             System.out.println("----> vinf");
             System.out.println("----> addapp");
-        }
-        if(arg.equals("cd")) {
+            System.out.println("----> dameon");
+            System.out.println("----> setup");
+            System.out.println("----> listapps");
+            System.out.println("----> nuke");
+            System.out.println("----> cp");
+        } else if(arg.equals("cd")) {
             help.cdHelp();
         } else if (arg.equals("ls")) {
             help.lsHelp();
@@ -50,6 +87,18 @@ public class main
             help.vinfHelp();
         } else if(arg.equals("addapp")) {
             help.addappHelp();
+        } else if(arg.equals("daemon")) {
+            help.daemonHelp();
+        } else if(arg.equals("setup")) {
+            help.setupHelp();
+        } else if(arg.equals("listapps")) {
+            help.listappsHelp();
+        } else if(arg.equals("nuke")) {
+            help.nukeHelp();
+        } else if(arg.equals("update")) {
+            help.updateHelp();
+        } else if(arg.equals("cp")) {
+            help.cpHelp();
         } else {
             System.out.println("Command " + arg + " not found. Run help * to list all commands");
         }
@@ -60,12 +109,17 @@ public class main
               File directory = new File(wd + arg);
             // get all the files from a directory
             File[] fList = directory.listFiles();
-        
+        String fileName;
     for (int index = 0; index < fList.length; index++) {
+        fileName = fList[index].getName();
         if (fList[index].isFile()) {
-            System.out.println("[file] " + fList[index]);
+            if(!fileName.startsWith(".")) { //if not a dot file
+                System.out.println("[file] " + fList[index]);
+            }
         } else if (fList[index].isDirectory()) {
-            System.out.println("[directory] " + fList[index]);
+            if(!fileName.startsWith(".")) { //ignore hidden folders
+                System.out.println("[directory] " + fList[index]);
+            }
         } 
      }
     }
@@ -182,10 +236,109 @@ public class main
         
         
     }
+    public static void setupJLinux() {
+        boolean systemUsername;
+        boolean defaultApps;
+        String newUsername = "";
+        File configFolder = new File(jLinuxInfo.configLocation());
+        configFolder.mkdir();
+        System.out.println(""); //print empty line
+        System.out.println("*** Setup jLinux ***");
+        Scanner in = new Scanner(System.in); //create a scanner object to use for the setup process
+        System.out.print("Use your Windows/Mac/Linux username as your jLinux name [yes] (y/N): ");
+        if(in.nextLine().equals("N")) {
+            systemUsername = false;
+            FileOutputStream fos;
+            do {
+                System.out.print("What username do you want then?: ");
+                newUsername = in.nextLine();
+            } while (newUsername.equals(""));
+            try(  PrintWriter out = new PrintWriter(jLinuxInfo.configLocation() + "overrideSystemUsername.jLinuxBoolean")  ){
+                out.print( newUsername );
+            } catch (FileNotFoundException fnfe) {
+                System.out.println("[ error ] Could not change username. Please report the issue on GitHub at: www.github.com/brendanmanning/jLinux");
+                systemUsername = true;
+            }
+        } else {
+            //use default system username
+            System.out.println("Using system username...");
+        }
+        //ask user if they would like to install some basic apps from the store (that i still haven't made a front end for) (oops!) 
+        System.out.print("Would you like to install some optional utility applications made by jLinux? [yes] (y/N): ");
+        String choice = in.nextLine();
+        if(choice.equals("y")) {
+            //user wants to install
+            System.out.println("Great! Applications: time, date, and properties will now download!");
+            addapp.install("time");
+            addapp.install("date");
+            addapp.install("properties");
+            System.out.println("Done installing apps....");
+        } else if (choice.equals("N")) {
+            System.out.println("Not installing optional apps");
+            System.out.println("If you change your mind, you can install them by running: addapp <time/date/properties>");
+        } else {
+            System.out.println("You picked neither option. Assuming 'no'");
+            System.out.println("If you change your mind, you can install them by running: addapp <time/date/properties>");
+        }
+        System.out.println("Would you like to enable live updates (daemons)?");
+        System.out.println("Daemons allow for important updates of personal information by periodically running apps you choose");
+        System.out.println("You can configure as many or as few daemons as you choose.");
+        System.out.println("Would you like to enable live updates? [y] (y/N)");
+        String liveUpdatesYN = in.nextLine();
+        if(liveUpdatesYN.equals("N")) {
+            System.out.println("Not enabling live updates!");
+            System.out.println("If you change your mind, re-run setup to enable live updates!");
+        } else {
+            System.out.println("Enabling daemons (live updates)");
+            File daemonsBool = new File(jLinuxInfo.configLocation() + "daemons.jLinuxBoolean");
+            if(!daemonsBool.exists()) {
+                try {
+                    daemonsBool.createNewFile();
+                } catch (IOException ioe) {
+                    System.out.println("[ error ] Settings file couldn't be created!");
+                }
+            } else {
+                System.out.println("[ info ] Live updates already enabled!");
+            }
+            System.out.println("Try out live updates?");
+            System.out.println("Turn on time notifications via 'time' app? [y] (y/N)");
+            String tryLive = in.nextLine();
+            if(tryLive.equals("N")) {
+                System.out.println("That's alright! You can always add a daemon with the 'liveupdate' app");
+            } else {
+                System.out.println("Adding 'time' daemon");
+                File timeLocation = new File(jLinuxInfo.appsLocation() + "time.jar");
+                if(timeLocation.exists()) {
+                    System.out.println("App 'time' already installed");
+                } else {
+                    System.out.println("App 'time' not installed!");
+                    addapp.install("time");
+                }
+                try {
+                    liveupdate.addDaemonByName("time");
+                } catch (FileNotFoundException fnfe) {
+                    System.out.println("[ error ] Could not add daemon!");
+                }
+            }
+        }
+        System.out.println("jLinux is now setup!");
+        System.out.println("If you would like to change any of the options you just chose just run: setup");
+        System.out.println("");
+    }
+    public static boolean isSystemSetup() {
+       File configFolderLocation = new File(jLinuxInfo.configLocation());
+       if(configFolderLocation.exists()) {
+           return true;
+       } else {
+         return false;  
+       }
+    }
     public static boolean _doSetup(String baseDir) {
         File hddLocation = new File(System.getProperty("user.dir") + File.separator + "hdd");
         File downloadsFolder = new File(System.getProperty("user.dir") + File.separator + "hdd" + File.separator + "downloads" + File.separator); 
-        File appsFolder = new File(System.getProperty("user.dir") + File.separator + "hdd" + File.separator + "applications" + File.separator); 
+        File appsFolder = new File(System.getProperty("user.dir") + File.separator + "hdd" + File.separator + "applications" + File.separator);
+        //File overrideUserName = new File(jLinuxInfo.configLocation() + "overrideSystemUsername.jLinuxBoolean");
+        //moved this code to isSystemSetup method
         if (hddLocation.exists()) {
            //hdd folder exists
            System.out.println("[ ok ] HDD data folder exists!");
@@ -207,12 +360,43 @@ public class main
             appsFolder.mkdir();
             System.out.println("[ debug ] Applications folder was missing, so it has been created!");
         }
+        daemonThread.main(null); //start daemon thread
+        //silently check to see if jLinux config exists
+        if(isSystemSetup() == false) {
+            setupJLinux();
+        }
         return true; 
     }
+    public static String getUsername() {
+        String username = System.getProperty("user.name");
+         //check if the username was overridden 
+         File overrideFile = new File (jLinuxInfo.overrideUsernameLocation());
+         if(overrideFile.exists()) {
+             FileReader fr;
+             try {
+                 fr = new FileReader(jLinuxInfo.overrideUsernameLocation());
+                 BufferedReader br = new BufferedReader(fr);
+                 String line = null;
+                 try {
+                       while((line = br.readLine()) != null) {
+                            username = line;
+                       }
+                 } catch (IOException ioe) {
+                     System.out.println("Internal Java Error!");
+                     username = System.getProperty("user.name");
+                 }
+             } catch (FileNotFoundException fnfe) {
+                System.out.println("[ error ] Check for username override file failed!");
+                username = System.getProperty("user.name"); //default back to normal username
+          }
+        }
+        /* once we're done finding the username, return it */
+        return username;
+    }
     public static String _shell(String wd) {
-            
+                  
               Scanner i = new Scanner(System.in);
-              System.out.print(System.getProperty("user.name") + "@jLinux: " + wd + "$ ");
+              System.out.print(getUsername() + "@jLinux: " + wd + "$ ");
               String command = i.nextLine();
               return command;
              
@@ -240,17 +424,21 @@ public class main
         String baseDir = System.getProperty("user.dir") + File.separator + "hdd" + File.separator;
         String os = System.getProperty("os.name");
         boolean isSetup = _doSetup(baseDir);
-        System.out.println("All good!");
+        System.out.println("");
         System.out.println("----{" + jLinuxInfo.version() + "}----");
+        System.out.println("");
+        System.out.println("Use of jLinux is subject to the jLinux Liscense found at https://github.com/brendanmanning/jLinux/blob/master/LICENSE");
         System.out.println("");
         System.out.println("::::::::Need Help?::::::::");
         System.out.println("Run help * to list all commands, or help + command name to get command specific help");
         //System.out.println("");
         String c; //initilize command holding variable. 'c' is short for command
         //first shell prompt
-        String wd = baseDir;
+         wd = baseDir;
         String downloadDir = System.getProperty("user.dir") + File.separator + "hdd" + File.separator + "downloads" + File.separator; 
         for (int zzz = 0; zzz < 1001; zzz++) {
+            
+            
             String res = "";
             int ok = 1;
             String cmd;
@@ -287,6 +475,30 @@ public class main
             arg = "";
             foundCommand = 1;
             listapps.list();
+        } else if(c.toLowerCase().equals("setup")) {
+            cmd = "setup";
+            arg = "";
+            foundCommand = 1;
+            setup.doSetup();
+        } else if(c.toLowerCase().equals("nuke")) {
+            cmd = "nuke";
+            arg = "";
+            foundCommand = 1;
+            nuke.doNuke();
+        } else if(c.toLowerCase().startsWith("daemon")) {
+            cmd = "daemon";
+            arg = "";
+            foundCommand = 1;
+            try {
+                liveupdate.daemonAdd();
+            } catch (FileNotFoundException fnfe) {
+                System.out.println("[ error ] Could not start program 'daemon'");
+            }
+        } else if(c.toLowerCase().equals("update")) {
+            cmd = "update";
+            arg = "";
+            foundCommand = 1;
+            update.doUpdate();
         } else {
            String[] a = new String[2];
          a[1] = "";
@@ -351,8 +563,9 @@ public class main
             foundCommand = 1;
         }
         if(foundCommand == 0) { //if no command above matches
-                if(loadApp.run(cmd.toLowerCase(), baseDir) == true) {
+                if(loadApp.run(c, baseDir) == true) {
                     //do nothing, the program will run by itself
+                    //arg = c.substring(c.indexOf(' ')+1);
                 } else {
                     System.out.println("The program '" + cmd + "' does not exist");
                 }
