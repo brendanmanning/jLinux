@@ -13,19 +13,43 @@ public class loadApp
         //in case it is though, show a copyright notice
         System.out.println("jLinux - (c) 2016 Brendan Manning");
     }
+    /*public static String parseargs(String command) {
+        String[] args = command.split(" ");
+        if(args[1] != null) {
+            return args[1];
+        } else {
+            return null;
+        }
+    }
+    */
     public static boolean run(String prog, String baseDir) {
         //first disable the default shell prompt
         //main._enableShell(false);
         //create a File object to find the program
+        String argument = null; //declare
+        
+        if(prog.contains(" ")) {
+            String[] command = prog.split(" ");
+            prog = command[0]; //get the text before the first space (the command name)
+            argument = command[1];
+        }
         String pStr = baseDir + "applications" + File.separator + prog.toLowerCase() + ".jar";
         //System.out.println(pStr);
         File f = new File(pStr);
         if (f.exists()) {
          //the program is there, run it
             try {
-                ProcessBuilder pb = new ProcessBuilder("java", "-jar", pStr);
+                ProcessBuilder pb = null;
+                if(argument != null) { //passing in an argument
+                    pb = new ProcessBuilder("java", "-jar", pStr, argument);
+                    //System.out.println("arg not null");
+                } else { //otherwise, no arg
+                     pb = new ProcessBuilder("java", "-jar", pStr);
+                     //System.out.println("arg: " + argument);
+                }
                     pb.directory(new File(System.getProperty("java.home")));
                     Process p = pb.start();
+                    //assert pb.redirectInput() == Redirect.PIPE;
                     LogStreamReader lsr = new LogStreamReader(p.getInputStream());
                     Thread thread = new Thread(lsr, "LogStreamReader");
                     thread.start();
