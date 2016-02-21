@@ -10,6 +10,7 @@ import java.lang.*;
 import java.lang.String;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.*;
 public class listapps
 {
     public static void main(String[] args) {
@@ -17,7 +18,9 @@ public class listapps
         //but if it does, show a copyright notice
         System.out.println("ListApps - part of jLinux (c) 2016 Brendan Manning");
     }
-    public static void list() {
+    public static List list() {
+        List apps = new ArrayList();
+        
         String fName;
         File appsFolder = new File(jLinuxInfo.appsLocation());
         File[] appsList = appsFolder.listFiles();
@@ -29,8 +32,11 @@ public class listapps
                     //ignore dot files
                 } else {
                     System.out.println("[" + fName.replace(".jar", "") + "]");
+                    apps.add(appsList[i]);
+                    
                 }
             }
         }
+        return apps;
     }
 }
