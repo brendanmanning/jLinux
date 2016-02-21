@@ -52,7 +52,7 @@ public class addapp
         //try {
              //if (huc.getResponseCode() == HttpsURLConnection.HTTPS_OK) {
                   //URL does exist
-                  System.out.println("Downloading App....");
+                  System.out.println("Downloading Application '" + app + "'....");
                   //now actually download the file
                   dl.get(fileString, appDir);
                   return true;
