@@ -10,7 +10,7 @@ import java.io.*;
 public class jLinuxInfo
 {
    public static String version() {
-       return "jLinux 2.3.0";
+       return "jLinux 2.5.1";
     }
    public static String developer() {
        return "Brendan Manning (c) 2016";
@@ -21,4 +21,12 @@ public class jLinuxInfo
    public static String appsLocation() {
        return System.getProperty("user.dir") + File.separator + "hdd" + File.separator + "applications" + File.separator;
     }
+   public static String hddLocation() {
+       return System.getProperty("user.dir") + File.separator + "hdd" + File.separator;
+   }
+   public static String configLocation() {
+       return System.getProperty("user.dir") + File.separator + "hdd" + File.separator + ".config" + File.separator;
+   }
+   public static String overrideUsernameLocation() {
+       return System.getProperty("user.dir") + File.separator + "hdd" + File.separator + ".config" + File.separator + "overrideSystemUsername.jLinuxBoolean";    }
 }
