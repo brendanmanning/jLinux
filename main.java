@@ -130,7 +130,7 @@ public class main
         }
         //terminate if path is not relative
         if(arg.startsWith(File.separator)) {
-            System.out.println("Path not valid. Folder location must be a relative path");
+            errors.path(arg);
             return "FAIL";
         }
         File newFolderLocation = new File(wd + arg);
@@ -157,8 +157,7 @@ public class main
     }
     public static int _command_vinf(String wd, String arg) throws java.io.FileNotFoundException {
         if (arg.startsWith(File.separator)) {
-            System.out.println("[ERROR]");
-            System.out.println("New file path cannot start with a slash. It must be a relative path to the current working directory.");
+            errors.path(arg);
             return 0;
         }
         String vinfNewLocation = wd + arg;
@@ -179,7 +178,8 @@ public class main
                         }
                             catch(IOException ioe)
                         {
-                                System.err.println("Internal Java Error -- IOException: " + ioe.getMessage());
+                               errors.internal("vinf");
+                               return 0;
                             }
               return 1;
             } else {
@@ -195,7 +195,8 @@ public class main
                       }
                   catch(IOException ioe)
                     {
-                     System.err.println("Internal Java Error -- IOException: " + ioe.getMessage());
+                    errors.internal("vinf");
+                    return 0;
                   }
            return 1;
          }
@@ -216,19 +217,19 @@ public class main
                     arg = arg + File.separator;
                 }
                 if(arg.startsWith(File.separator)) {
-                    System.out.println("Invalid path: Path must be relative to current working directory!");
+                    errors.path(arg);
                     return wd;
                 }
                 File cd2 = new File(wd + arg);
                 if(!cd2.exists()) {
-                    System.out.println(wd + arg + " does not exist, or is a file.");
+                    errors.other(wd + arg + " does not exist, or is a file.", "cd");
                     return wd;
                 }
                 wd = wd + arg;
                 return wd;
             
         } else {
-            System.out.println("Not enough arguments were passed into program: cd");
+            errors.other("Not enough arguments were passed into program: cd", "cd");
             System.out.println("Current working directory changed to root of HDD folder");
             wd = baseDir;
             return baseDir;
@@ -256,7 +257,7 @@ public class main
             try(  PrintWriter out = new PrintWriter(jLinuxInfo.configLocation() + "overrideSystemUsername.jLinuxBoolean")  ){
                 out.print( newUsername );
             } catch (FileNotFoundException fnfe) {
-                System.out.println("[ error ] Could not change username. Please report the issue on GitHub at: www.github.com/brendanmanning/jLinux");
+                errors.fileNotFound("overrideSystemUsername.jLinuxBoolean");
                 systemUsername = true;
             }
         } else {
@@ -317,7 +318,7 @@ public class main
                 try {
                     liveupdate.addDaemonByName("time");
                 } catch (FileNotFoundException fnfe) {
-                    System.out.println("[ error ] Could not add daemon!");
+                    errors.other("[ error ] Could not add daemon!", "setup");
                 }
             }
         }
@@ -382,11 +383,11 @@ public class main
                             username = line;
                        }
                  } catch (IOException ioe) {
-                     System.out.println("Internal Java Error!");
+                     errors.internal("Default Shell Service");
                      username = System.getProperty("user.name");
                  }
              } catch (FileNotFoundException fnfe) {
-                System.out.println("[ error ] Check for username override file failed!");
+                errors.other("[ error ] Check for username override file failed!", "Default Shell Service");
                 username = System.getProperty("user.name"); //default back to normal username
           }
         }
@@ -400,20 +401,6 @@ public class main
               String command = i.nextLine();
               return command;
              
-    }
-    //static int shellEnabled = 1;
-    public static Boolean _enableShell(Boolean e) {
-        if(e == true) {
-            //shellEnabled = 1;
-            //enable shell prompt
-            return true;
-        }
-        if(e == false) {
-            //shellEnabled = 0;
-            return false;
-        }
-        return true; 
-        //always return true, although this return statement should never be reached
     }
     public static void main(String[] args) throws java.lang.ArrayIndexOutOfBoundsException {
         //setShellVar();
@@ -468,12 +455,15 @@ public class main
                 foundCommand = 1;
             } catch (ArrayIndexOutOfBoundsException arioobe) {
                 foundCommand = 1;
-                System.out.println("Invalid number of arguments for 'cp'");
+                errors.other("Invalid number of arguments", "cp");
             }
         } else if (c.toLowerCase().startsWith("listapp")) {
             cmd = "listapps";
             arg = "";
             foundCommand = 1;
+            //show the title message
+            //bc it was removed to facilitate updateapps command
+            System.out.println("The following apps are currently installed:");
             listapps.list();
         } else if(c.toLowerCase().equals("setup")) {
             cmd = "setup";
@@ -499,6 +489,11 @@ public class main
             arg = "";
             foundCommand = 1;
             update.doUpdate();
+        } else if(c.toLowerCase().equals("updateapps")) {
+            cmd = "updateapps";
+            arg = "";
+            foundCommand = 1;
+            updateapps.doUpdate();
         } else {
            String[] a = new String[2];
          a[1] = "";
@@ -562,12 +557,35 @@ public class main
             addapp.install(arg);
             foundCommand = 1;
         }
+        if(cmd.toLowerCase().equals("open")) {
+            fileOpen.doOpen(arg, wd);
+            foundCommand = 1;
+        }
+        if(cmd.toLowerCase().equals("url")) {
+            urlOpen.doOpen(arg);
+            foundCommand = 1;
+        }
+        /*if(cmd.toLowerCase().equals("angry")) {
+            if(arg.toLowerCase().equals("true")) {
+                angry.main(true);
+            } else if (arg.toLowerCase().equals("false")) {
+                angry.main(false);
+            } else {
+                System.out.println("Wrong arguments. Program angry accepts true or false");
+            }
+            foundCommand = 1;
+        }
+        */ 
+       /* remove angry code because it really doesn't work yet
+        * perhaps manual enabling/disabling via angry.jLinuxBoolean might work
+        * but for now, the angry command is not supported
+        */
         if(foundCommand == 0) { //if no command above matches
-                if(loadApp.run(c, baseDir) == true) {
+                if(loadApp.run(c, baseDir, wd) == true) {
                     //do nothing, the program will run by itself
                     //arg = c.substring(c.indexOf(' ')+1);
                 } else {
-                    System.out.println("The program '" + cmd + "' does not exist");
+                    /* Do nothing. Loadapp will output an error message */
                 }
         }
         }

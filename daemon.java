@@ -33,7 +33,8 @@ public class daemon
                                 //if that's the case, don't do anything
                             } else {
                                 System.out.println("---------------------");
-                                loadApp.run(line, jLinuxInfo.hddLocation());
+                                loadApp.run(line, jLinuxInfo.hddLocation(), "");
+                                /* Added a blank wd to Loadapp reference. It won't need that info, but it still must be passed in */
                                 actuallyRan++;
                             }
                         }
@@ -55,7 +56,7 @@ public class daemon
             return true;
         } else {
             //daemons are disabled
-            return false;
+            return true; //still return true though, because if we don't messages that the daemon didn't run will annoy the user
         }
     }
 }

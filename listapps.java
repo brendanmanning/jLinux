@@ -24,7 +24,7 @@ public class listapps
         String fName;
         File appsFolder = new File(jLinuxInfo.appsLocation());
         File[] appsList = appsFolder.listFiles();
-        System.out.println("The following apps are currently installed:");
+        //System.out.println("The following apps are currently installed:");
         for (int i = 0; i < appsList.length; i++) {
             if(appsList[i].isFile()) {
                 fName = appsList[i].getName();
@@ -32,7 +32,7 @@ public class listapps
                     //ignore dot files
                 } else {
                     System.out.println("[" + fName.replace(".jar", "") + "]");
-                    apps.add(appsList[i]);
+                    apps.add(appsList[i].getAbsolutePath());
                     
                 }
             }
