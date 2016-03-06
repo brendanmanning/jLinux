@@ -8,10 +8,10 @@
 public class extras
 {
     public static void echoOS() {
-        System.out.println("{{" + System.getProperty("os.name") + "}}");
+        o.echo(jLinuxInfo.guiEnabled(),"{{" + System.getProperty("os.name") + "}}");
     }
     public static void echoVersion() {
-        System.out.println("{{" + System.getProperty("os.name") + " " + System.getProperty("os.version") + "}}");
+        o.echo(jLinuxInfo.guiEnabled(), "{{" + System.getProperty("os.name") + " " + System.getProperty("os.version") + "}}");
     }
     public static void echo(String arg) {
         //code here

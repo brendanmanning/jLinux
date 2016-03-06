@@ -1,13 +1,16 @@
 class daemonThread implements Runnable{  
   public void run(){  
-     System.out.println("[ info ] Daemon service started!");
+     if(jLinuxInfo.guiEnabled() == false) {
+         System.out.println("[ info ] Daemon service started!");
+        }
      while(true) { //loop forever
          try {
              Thread.sleep(120000); //sleep for two minutes
              if(daemon.doDaemon() == true) {
                  //daemon worked fine
              } else {
-                 System.out.println("[ error ] Daemon service failed to execute!");
+                 /* System.out.println("[ error ] Daemon service failed to execute!"); */
+                 /* Don't show the warning as it annoys users that disable the feature */
              }
         } catch (InterruptedException ie) {
             System.out.println("[ error ] Daemon service crashed!");

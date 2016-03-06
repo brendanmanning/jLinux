@@ -32,7 +32,9 @@ public class daemon
                                 //check if line is empty
                                 //if that's the case, don't do anything
                             } else {
-                                System.out.println("---------------------");
+                                if(jLinuxInfo.guiEnabled() == false) {
+                                    System.out.println("---------------------");
+                                }
                                 loadApp.run(line, jLinuxInfo.hddLocation(), "");
                                 /* Added a blank wd to Loadapp reference. It won't need that info, but it still must be passed in */
                                 actuallyRan++;

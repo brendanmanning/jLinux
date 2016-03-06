@@ -20,7 +20,7 @@ public class listapps
     }
     public static List list() {
         List apps = new ArrayList();
-        
+        String al = "";
         String fName;
         File appsFolder = new File(jLinuxInfo.appsLocation());
         File[] appsList = appsFolder.listFiles();
@@ -31,11 +31,19 @@ public class listapps
                 if(fName.startsWith(".")) {
                     //ignore dot files
                 } else {
-                    System.out.println("[" + fName.replace(".jar", "") + "]");
-                    apps.add(appsList[i].getAbsolutePath());
-                    
+                    if(jLinuxInfo.guiEnabled() == false) {
+                        System.out.println("[" + fName.replace(".jar", "") + "]");
+                        apps.add(appsList[i].getAbsolutePath());
+                    } 
+                    if(jLinuxInfo.guiEnabled()) {
+                        al += fName.replace(".jar", "") + "\n";
+                    }
                 }
             }
+        }
+        /* if GUI was enabled, print the list now */
+        if(jLinuxInfo.guiEnabled()) {
+            o.echo(true, al);
         }
         return apps;
     }

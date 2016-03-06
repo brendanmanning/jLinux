@@ -48,21 +48,15 @@ public class addapp
             System.out.println("An Error Occured. Download stopped!");
             return false;
         }
-        
-        //try {
-             //if (huc.getResponseCode() == HttpsURLConnection.HTTPS_OK) {
-                  //URL does exist
-                  System.out.println("Downloading Application '" + app + "'....");
-                  //now actually download the file
-                  dl.get(fileString, appDir);
-                  return true;
-             //} else {
-                 //System.out.println("Sorry, that app does not exist");
-                 //return false;
-               // }
-        //} //catch (java.io.IOException ioe3) {
-         //   System.out.println("An error caused the download to fail!");
-          //  return false;
-        //}
+            
+         boolean w = false;
+         o.echo(false, "Downloading Application '" + app + "'....");
+          //now actually download the file
+         w = dl.get(fileString, appDir);
+         if(jLinuxInfo.isDoingSetup() == false) {         
+             o.echo(jLinuxInfo.guiEnabled(), "Downloaded App: " + app);
+         }
+         return w;
+             
     }
 }

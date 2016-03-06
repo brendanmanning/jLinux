@@ -9,8 +9,19 @@
 import java.io.*;
 public class jLinuxInfo
 {
+    private static boolean isGUIOn = false;
+    private static boolean doingSetup = false;
+   public static boolean guiEnabled() {
+       return isGUIOn;
+   }
+   public static void guiOn() {
+        isGUIOn = true;
+   }
+   public static void guiOff() {
+       isGUIOn = false;
+    }
    public static String version() {
-       return "jLinux 2.6.1";
+       return "jLinux 2.7";
     }
    public static String developer() {
        return "Brendan Manning (c) 2016";
@@ -30,4 +41,13 @@ public class jLinuxInfo
    public static String overrideUsernameLocation() {
        return System.getProperty("user.dir") + File.separator + "hdd" + File.separator + ".config" + File.separator + "overrideSystemUsername.jLinuxBoolean";    
     }
+   public static void doingSetupNow() {
+       doingSetup = true;
+   }
+   public static void notDoingSetup() {
+       doingSetup = false;
+   }
+   public static boolean isDoingSetup() {
+       return doingSetup;
+   }
 }

@@ -49,10 +49,10 @@ public class errors
     }
     public static void cmd(String msg) {
         if(angry() == false) {
-            System.out.println(msg);
+            o.echo(jLinuxInfo.guiEnabled(), msg);
         }
         if(angry()) {
-            System.out.println("How could you!! After all i've done for you?!?! " + msg);
+            o.echo(jLinuxInfo.guiEnabled(), "How could you!! After all i've done for you?!?! " + msg);
         }
     }
 }

@@ -15,5 +15,7 @@ public class update
        } else {
            System.out.println("To update jLinux, download the latest JAR file from jLinux.net and replace your existing .jar with it");
        }
+       
+       
    }
 }
