@@ -3,6 +3,11 @@ IMPORTANT: While reading source code is great, I suggest downloading the binary 
 by using the lastest jLinux JAR file (also found at https://jlinux.net and starting it in a shell with: 
 java -jar <jLinux Jar Location>
 ##############################################################################################################################
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+DOWNLOAD: https://www.jlinux.net/download/latest/latest.jar 
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 jLinux: A realistic java emulator for any Java compadible operating system.
 
 What is jLinux? - jLinux provides a Linux-styled command line interface for users of Macintosh, Windows, and yes Linux itself. 
