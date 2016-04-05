@@ -22,6 +22,7 @@ public class cp
               System.out.println("Copied!");
            } catch(IOException ioe3) {
                System.out.println("[ error ] File copy failed!");
+               log.log("copy failed!");
                System.out.println(ioe3.getMessage());
             }
           //if file already exists, replace it
@@ -35,7 +36,7 @@ public class cp
         System.out.println("jLinux (c) 2016 - Brendan Manning");
     }
     public static void copy(String origin, String dest, String cwd) {
-        System.out.println("Copy " + origin + " to " + dest);    
+        log.log("Copy " + origin + " to " + dest);    
         //if file name doesn't contain slashes, we need to add the current path to the front
         if(!origin.contains(File.separator)) {
             //origin = "";

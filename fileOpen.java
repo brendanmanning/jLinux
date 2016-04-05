@@ -22,7 +22,14 @@ public class fileOpen
              * we must convert the absolute to relative paths.
              * Simple String manipulation can accomplish this
              */
-            arg = jLinuxInfo.hddLocation() + arg;
+            
+            /* NOTE: I fixed it so that you can open files below the root
+             * Previsously it was appending the hdd folder to the arg, so typing
+             * open jLinux.txt in the logs folder would fail, because it was looking
+             * for /users folder/hdd/jLinux.txt
+             * when the user was actually opening /users folder/hdd/logs/jLinux.txt
+             */
+            arg = main.getwd() + arg;
             /* All that was done there was put the HDD folder location
              * in front of the file argument
              */

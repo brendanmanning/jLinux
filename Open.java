@@ -33,9 +33,12 @@ public class Open
                             Desktop.getDesktop().open(f);
                         } catch (IllegalArgumentException iae) {
                             System.out.println("[ error ] File could not be opened!");
+                            log.log("Program: Open encountered an IllegalArgumentException");
                         }
                     } catch (IOException ioe) {
                         System.out.println("[ error ] File could not be opened!");
+                        log.log("Program: Open encountered an IOException");
+                        
                     }
             }
             if(type == 2) {
@@ -45,9 +48,11 @@ public class Open
                         Desktop.getDesktop().browse(u);
                     } catch (IOException i) {
                         System.out.println("[ error ] URL could not be opened: ioexception");
+                        log.log("[ error ] URL could not be opened: ioexception");
                     }
                 } catch (URISyntaxException use) {
                    System.out.println("[ error ] URL could not be opened!"); 
+                   log.log("[ error ] URL could not be opened!");
                 }
             }
         } else {

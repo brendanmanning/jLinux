@@ -1,7 +1,7 @@
 class daemonThread implements Runnable{  
   public void run(){  
      if(jLinuxInfo.guiEnabled() == false) {
-         System.out.println("[ info ] Daemon service started!");
+         log.log("[ info ] Daemon service started!");
         }
      while(true) { //loop forever
          try {
@@ -9,11 +9,12 @@ class daemonThread implements Runnable{
              if(daemon.doDaemon() == true) {
                  //daemon worked fine
              } else {
-                 /* System.out.println("[ error ] Daemon service failed to execute!"); */
+                 log.log("[ error ] Daemon service failed to execute!");
                  /* Don't show the warning as it annoys users that disable the feature */
              }
         } catch (InterruptedException ie) {
             System.out.println("[ error ] Daemon service crashed!");
+            log.log("[ error ] Daemon service crashed!");
             System.exit(1);
         }
      }

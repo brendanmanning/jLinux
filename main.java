@@ -108,7 +108,9 @@ public class main
     public static void _command_ls(String wd, String arg) {
              String output = ""; //string to hold the output
                 wd = _cleanWd(wd);
+            
               arg = _cleanArg(arg);
+             
               File directory = new File(wd + arg);
             // get all the files from a directory
             File[] fList = directory.listFiles();
@@ -116,17 +118,41 @@ public class main
     for (int index = 0; index < fList.length; index++) {
         fileName = fList[index].getName();
         if (fList[index].isFile()) {
-            if(!fileName.startsWith(".")) { //if not a dot file
-                output += "[file] " + fList[index] + "\n";
-            }
+            //if(!fileName.startsWith(".")) { //if not a dot file
+                    output += "[file] " + fList[index];
+
+            //}
         } else if (fList[index].isDirectory()) {
-            if(!fileName.startsWith(".")) { //ignore hidden folders
-                output += "[directory] " + fList[index] + "\n";
-            }
+            //if(!fileName.startsWith(".")) { //ignore hidden folders
+                output += "[directory] " + fList[index];
+            //}
         } 
+        /* Style fixes */
+        if(index != 0) {
+            if(index != fList.length - 1) {
+                if(fList.length != 0) {
+                    output += "\n";
+                }
+            }
+        }
      }
-        /* Now output the list to the user */
-       o.echo(jLinuxInfo.guiEnabled(), output); /* using the gui extension if required */
+     
+     /* if nothing was output above */ 
+     if(fList.length == 0) {
+         /* Only show the message in GUI mode */
+         if(jLinuxInfo.guiEnabled() == true) {
+             output += "Nothing to show here :(";
+         } else {
+             /* set output to a message that jLinux will know to ignore */
+             output = ";;;ignore;;;";
+         }
+     }
+     /* Now output the list to the user */
+     
+     /* But only if there's something to show */
+        if(!output.equals(";;;ignore;;;")) {
+            o.echo(jLinuxInfo.guiEnabled(), output); /* using the gui extension if required */
+        }
     }
     public static String _command_mkdir(String wd, String arg) {
         //clean up the command args
@@ -245,24 +271,6 @@ public class main
     }
     public static boolean doesJalopyExist() {
         return true;
-        /* Return true without doing anything to ignore this code because it's no longer needed */
-        /*
-        String jarPth = main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        int index = jarPth.lastIndexOf(File.separator);
-        jarPth = jarPth.replace("jLinux.jar", "");
-        jarPth += "jalopy.jar";
-        System.out.println("Path: " + jarPth);
-        File jalopyFile = new File(jarPth);
-        if(jalopyFile.exists()) {
-            return true;
-        }
-        if(!jalopyFile.exists()) {
-            return false;
-        } else {
-            /* catch all statement that will never be reached 
-            //return false;
-            */
-        //}
     }
     public static void setupJLinux() {
         /* set the setup property */
@@ -383,16 +391,7 @@ public class main
         File hddLocation = new File(System.getProperty("user.dir") + File.separator + "hdd");
         File downloadsFolder = new File(System.getProperty("user.dir") + File.separator + "hdd" + File.separator + "downloads" + File.separator); 
         File appsFolder = new File(System.getProperty("user.dir") + File.separator + "hdd" + File.separator + "applications" + File.separator);
-        String jalopyJarStr = main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "jalopy.jar";
-        String jalopyJarDecodedStr = "";
-        try {
-             jalopyJarDecodedStr = URLDecoder.decode(jalopyJarStr, "UTF-8");
-        } catch (UnsupportedEncodingException use) {
-            System.out.println("[ error ] Jalopy API Jar could not be loaded!");
-            System.out.println("Aborting...");
-            System.exit(0);
-        }
-        File jalopyJar = new File(jalopyJarDecodedStr);
+        
         //File overrideUserName = new File(jLinuxInfo.configLocation() + "overrideSystemUsername.jLinuxBoolean");
         //moved this code to isSystemSetup method
         if (hddLocation.exists()) {
@@ -404,6 +403,7 @@ public class main
            hddLocation.mkdir(); 
            if(jLinuxInfo.guiEnabled() == false) {
                System.out.println("[ debug ] HDD folder was missing, so it has been created in your home folder");
+               log.log("[ debug ] HDD folder was missing, so it has been created in your home folder");
             }
         }
         if(downloadsFolder.exists()) {
@@ -416,6 +416,7 @@ public class main
             //downloads folder did not exist so it was created
             if(jLinuxInfo.guiEnabled() == false) {
                 System.out.println("[ debug ] User downloads folder was missing, so it was created!");
+                log.log("[ debug ] User downloads folder was missing, so it was created!");
             }
         }
         if(appsFolder.exists()) {
@@ -426,6 +427,7 @@ public class main
             appsFolder.mkdir();
             if(jLinuxInfo.guiEnabled() == false) {
                 System.out.println("[ debug ] Applications folder was missing, so it has been created!");
+                log.log("[ debug ] Applications folder was missing, so it has been created!");
             }
         }
         daemonThread.main(null); //start daemon thread
@@ -433,14 +435,14 @@ public class main
          if(isSystemSetup() == false) {
             setupJLinux();
         }
-        if(!jalopyJar.exists()) {
-            /* Pass the current working directory of the running jLinux Jar */
+        /*if(!jalopyJar.exists()) {
+             Pass the current working directory of the running jLinux Jar 
             getNewJalopy(main.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         } else {
             if(jLinuxInfo.guiEnabled() == false) {
                 System.out.println("[ debug ] API Jar found!");
             }
-        }
+        }*/
         return true; 
     }
     public static String getUsername() {
@@ -494,6 +496,45 @@ public class main
                 }
     }
     public static void main(String[] args) throws java.lang.ArrayIndexOutOfBoundsException {
+        /* create log folder if not exist */
+        File logFolder = new File(jLinuxInfo.hddLocation() + "logs");
+        if(!logFolder.exists()) {
+            logFolder.mkdir();
+        }
+        /* create the lock log file just in case */
+        File lckFile = new File(jLinuxInfo.logLocation());
+        if(lckFile.exists()) {
+            //do nothing
+        } else {
+            try {
+                lckFile.createNewFile();
+            } catch (IOException e) {
+                System.out.println("Couldn't enabled logger....");
+                System.out.println("Disabling...");
+                jLinuxInfo.noLog();
+            }
+        }
+        /* Start the logging Thread */
+        logThread.main(null);
+        /* define basedir */
+        String baseDir = System.getProperty("user.dir") + File.separator + "hdd" + File.separator;
+        /* user is requesting root privlidges 
+         * prompt for confirmation
+         */
+        if(args.length > 0) {
+            if(args[0].equals("root")) {
+                System.out.println("Logging in as root..");
+                System.out.println("WARNING: Using root mode will disable jLinux features that limit jLinux to it's own directory\nThis will allow you to use jLinux utilities for any file on your system\nHowever this feature is untested.\nAre you sure you want to continue? (y/n) [y] : ");
+                Scanner checker = new Scanner(System.in);
+                String returned = checker.nextLine();
+                if(returned.toLowerCase().equals("n")) {
+                    System.out.println("Aborted! Logging in normally...");
+                } else {
+                    System.out.println("Logged in as root!");
+                    baseDir = System.getProperty("user.dir");
+                }
+            }
+        }
         //check if gui is being forced
         boolean guiForced = false;
         guiForced = isGuiForced();
@@ -503,9 +544,9 @@ public class main
         //initilize core host system vars
         if(guiForced == false) {
             System.out.println("Booted Successfully!");
+            log.log("System booted!");
             System.out.println("Checking if system set up");
         }
-        String baseDir = System.getProperty("user.dir") + File.separator + "hdd" + File.separator;
         String os = System.getProperty("os.name");
         boolean isSetup = _doSetup(baseDir);
         if(guiForced == false) {
@@ -536,7 +577,11 @@ public class main
             int foundCommand = 0;
         if(c.toLowerCase().equals("quit")) {
             System.out.println("Quitting...");
+            log.log("Safely closing jLinux");
+            /* force writing to log of whatever's no already there */
+            utils.writeToFile(jLinuxInfo.logLocation(), log.getLog());
             foundCommand = 1;
+            /* break and exit */
             break;
              
         }
@@ -605,6 +650,16 @@ public class main
             arg = "";
             foundCommand = 1;
             o.echo(jLinuxInfo.guiEnabled(), "Version: " + jLinuxInfo.version());
+        } else if(c.toLowerCase().equals("explorer")) {
+            cmd = "explorer";
+            arg = "";
+            foundCommand = 1;
+            runExplorer.main();
+        } else if(c.toLowerCase().equals("pwd")) {
+            cmd = "pwd";
+            arg = "";
+            foundCommand = 1;
+            o.echo(jLinuxInfo.guiEnabled(), wd);
         } else {
            String[] a = new String[2];
          a[1] = "";
@@ -674,6 +729,10 @@ public class main
         }
         if(cmd.toLowerCase().equals("url")) {
             urlOpen.doOpen(arg);
+            foundCommand = 1;
+        }
+        if(cmd.toLowerCase().equals("text")) {
+            text.main(arg);
             foundCommand = 1;
         }
         if(cmd.toLowerCase().equals("gui")) {

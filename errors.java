@@ -18,6 +18,7 @@ public class errors
     public static void fileNotFound(String fname) {
         if(angry() == false) {
             System.out.println("[ error ] The file " + fname + " could not be found or does not exist!");
+            log.log("[ error ] The file " + fname + " could not be found or does not exist!");
         }
         if(angry()) {
             System.out.println("srsly mon! What ARE YOU DOING! \nHow come u go loozin dis fiel : " + fname);
@@ -26,6 +27,7 @@ public class errors
     public static void internal(String prog) {
         if(angry() == false) {
             System.out.println("[ error ] An internal java error caused the program " + prog + " to fail");
+            log.log("[ error ] An internal java error caused the program " + prog + " to fail");
         }
         if(angry()) {
             System.out.println("Well, you really SCREWED UP THIS TIME! No, I'm not making a scene! \nYOU'RE THE ONE MAKING A SCENE! It's not MY fault there was an \nINTERNAL JAVA ERROR *Nicholas Cage freak-out voice*");

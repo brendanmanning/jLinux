@@ -93,4 +93,10 @@ public class help
         System.out.println("WARNING: nuke deletes ALL files and folders inside you jLinux 'hdd' folder! jLinux and it's developers are not reponsible for any damages that may be caused!");
         System.out.println("* nuke does not uninstall jLinux. To do so, remove the jLinux application directory/jar file from you computer!");
     }
+    public static void textHelp() {
+        System.out.println("TeXT creates and reads encrypted text files");
+        System.out.println("Syntax:\ntext [-v:,-d:]<file location>");
+        System.out.println("-v: Lets users view a normal (enencrypted text file)");
+        System.out.println("-d: Lets users decrypt and view a file encrypted with the TeXT");
+    }
 }

@@ -18,4 +18,8 @@ public class update
        
        
    }
+   public static boolean checkForUpdate() {
+       //dl.get("http://www.jlinux.net/download/version/number.txt");\
+       return false;
+    }
 }

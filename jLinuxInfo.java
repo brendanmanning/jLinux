@@ -11,6 +11,7 @@ public class jLinuxInfo
 {
     private static boolean isGUIOn = false;
     private static boolean doingSetup = false;
+    private static boolean logging = true;
    public static boolean guiEnabled() {
        return isGUIOn;
    }
@@ -21,7 +22,7 @@ public class jLinuxInfo
        isGUIOn = false;
     }
    public static String version() {
-       return "jLinux 2.7";
+       return "jLinux 2.8";
     }
    public static String developer() {
        return "Brendan Manning (c) 2016";
@@ -50,4 +51,19 @@ public class jLinuxInfo
    public static boolean isDoingSetup() {
        return doingSetup;
    }
+   public static String jrcPassLocation() {
+       return System.getProperty("user.dir") + File.separator + "hdd" + File.separator + ".config" + File.separator + "jrc.pass";
+   }
+   public static String logLocation() {
+       return hddLocation() + "logs" + File.separator + "jLinux.txt";
+    }
+    public static boolean loggingOn() {
+        return logging;
+    }
+    public static void doLog() {
+        logging = true;
+    }
+    public static void noLog() {
+        logging = false;
+    }
 }
