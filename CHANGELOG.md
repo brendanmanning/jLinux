@@ -19,7 +19,7 @@
 - Minor bug fixes.
 - UI improvements
 
-[2.8] (MAJOR UPDATES)
+[2.8] {MAJOR UPDATES}
 - Explorer - graphical directory browser. Simply type explorer to graphically list the contents of the current directory.
 - TeXT Command - an improved vinf (which will be phased out soon). Supports encryption of text files and multiple lines.
 - Error and event logging to log/ folder.
