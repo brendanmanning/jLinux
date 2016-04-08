@@ -30,7 +30,7 @@ What commands does jLinux have?
   - addapp : jLinux Package Manager
   - listapps : returns all apps installed via 'addapp'
   - cp : copy command
-  - TeXT : Encrypted text editor/viewer6
+  - TeXT : Encrypted text editor/viewer
 
 How can I support jLinux? 
   - Tell your friends!
