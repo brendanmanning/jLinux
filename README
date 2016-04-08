@@ -5,7 +5,7 @@ java -jar <jLinux Jar Location>
 ##############################################################################################################################
 
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-DOWNLOAD: https://www.jlinux.net/download/latest/latest.jar 
+[Download jLinux] (https://www.jlinux.net/download/latest/latest.jar)
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 jLinux: A realistic java emulator for any Java compadible operating system.
@@ -30,6 +30,7 @@ What commands does jLinux have?
   - addapp : jLinux Package Manager
   - listapps : returns all apps installed via 'addapp'
   - cp : copy command
+  - TeXT : Encrypted text editor/viewer6
 
 How can I support jLinux? 
   - Tell your friends!
