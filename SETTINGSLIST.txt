@@ -1,0 +1,7 @@
+List of all .jLinuxBoolean files that can be used.
+  - File used for recordkeeping
+
+overrideSystemUsername.jLinuxBoolean
+daemons.jLinuxBoolean
+daemons-m.jLinuxBoolean
+angry.jLinuxBoolean
