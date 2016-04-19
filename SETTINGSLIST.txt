@@ -5,3 +5,7 @@ overrideSystemUsername.jLinuxBoolean
 daemons.jLinuxBoolean
 daemons-m.jLinuxBoolean
 angry.jLinuxBoolean
+
+List of .jlf Files
+  - jlf: JLinux File
+onBoot.jlf : Bootscripts
