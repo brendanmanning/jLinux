@@ -25,3 +25,10 @@
 - Error and event logging to log/ folder.
     - Logging runs on it's own thread and writes to a .txt file every 30 seconds.
 - Many bug fixes, performance upgrades, and new features
+[2.9] {New features, new fixes}
+- ls - Finally fixed a bug where the first or last line would have two file names on it
+- Bootscripts
+    - Set specific apps to run when jLinux starts
+    - onBoot.jlf contains the list
+- Updating on Windows is now easier because jLinux launches the update utility for you!
+- Fixed TeXT bug where it accepted null (empty string or space) as a file name
