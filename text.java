@@ -29,12 +29,17 @@ public class text {
                 System.out.println(utils.getFileText(a).replace("[*LINE*]", "\n"));
             }
         } else {
-            if(a.startsWith(File.separator)) {
-                o.echo(jLinuxInfo.guiEnabled(),"Error! Path must be relative!");
+            if(a.replace(" ", "").equals("")) {
+                log.log("Not enough args for TeXT");
+                o.echo(jLinuxInfo.guiEnabled(), "Error! Not enough args");
             } else {
-                a = main.getwd() + a;
+                if(a.startsWith(File.separator)) {
+                    o.echo(jLinuxInfo.guiEnabled(),"Error! Path must be relative!");
+                } else {
+                    a = main.getwd() + a;
+                }
+                newFile(a);
             }
-            newFile(a);
         }
     }
     public static void newFile(String f) {

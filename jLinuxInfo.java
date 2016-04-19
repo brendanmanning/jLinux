@@ -22,7 +22,7 @@ public class jLinuxInfo
        isGUIOn = false;
     }
    public static String version() {
-       return "jLinux 2.8";
+       return "jLinux 2.9";
     }
    public static String developer() {
        return "Brendan Manning (c) 2016";
@@ -57,13 +57,16 @@ public class jLinuxInfo
    public static String logLocation() {
        return hddLocation() + "logs" + File.separator + "jLinux.txt";
     }
-    public static boolean loggingOn() {
+   public static boolean loggingOn() {
         return logging;
-    }
-    public static void doLog() {
+   }
+   public static void doLog() {
         logging = true;
-    }
-    public static void noLog() {
+   }
+   public static void noLog() {
         logging = false;
+   }
+   public static String bootScriptsLocation() {
+       return configLocation() + "onBoot.jlf";
     }
 }

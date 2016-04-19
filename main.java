@@ -116,6 +116,14 @@ public class main
             File[] fList = directory.listFiles();
         String fileName;
     for (int index = 0; index < fList.length; index++) {
+                /* Style fixes */
+        if(index != 0) {
+            //if(index != fList.length - 1) {
+              //  if(fList.length != 0) {
+                    output += "\n";
+                //}
+            //}
+        }
         fileName = fList[index].getName();
         if (fList[index].isFile()) {
             //if(!fileName.startsWith(".")) { //if not a dot file
@@ -127,14 +135,6 @@ public class main
                 output += "[directory] " + fList[index];
             //}
         } 
-        /* Style fixes */
-        if(index != 0) {
-            if(index != fList.length - 1) {
-                if(fList.length != 0) {
-                    output += "\n";
-                }
-            }
-        }
      }
      
      /* if nothing was output above */ 
@@ -371,6 +371,10 @@ public class main
                 }
             }
         }
+        /* Ask the user if he/she wants bootscripts */
+        /* Use onBoot.java's built in method to save space here */
+        onBoot.setupFunc();
+        /* All finished! */
         System.out.println("jLinux is now setup!");
         System.out.println("If you would like to change any of the options you just chose just run: setup");
         System.out.println("");
@@ -562,13 +566,35 @@ public class main
             o.echo(true, "Booted!\n--{jLinux " + jLinuxInfo.version() + "}--");
         }
         //System.out.println("");
-        String c; //initilize command holding variable. 'c' is short for command
+        
+        /* Before showing the first shell prompt, be sure to call the boot scripts */
+        onBoot.bootApps();
+        /*This calls the method which will search for and run any bootscripts
+         * No filtering is needed on this side, onBoot.java will handle everything itself
+         */
+        
+        /* After that's done, start showing the first shell prompt */
         //first shell prompt
          wd = baseDir;
-        String downloadDir = System.getProperty("user.dir") + File.separator + "hdd" + File.separator + "downloads" + File.separator; 
+        
         for (int zzz = 0; zzz < 1001; zzz++) {
-            
-            
+            runCommand(null);
+        }
+        System.exit(0); 
+        //when program execution finished, close safely
+    }
+    public static void runCommand(String command) {
+        /* Moved code from main method to a new method
+         * This way anyone can call this method to run a command
+         */
+        String c; //initilize command holding variable. 'c' is short for command
+        if(command != null) {
+            c = command;
+        }
+        String downloadDir = System.getProperty("user.dir") + File.separator + "hdd" + File.separator + "downloads" + File.separator; 
+            /* CHANGED: This should make commands work inside nested folders */
+            /* TEST IT OUT */
+            String baseDir = jLinuxInfo.hddLocation();
             String res = "";
             int ok = 1;
             String cmd;
@@ -582,7 +608,8 @@ public class main
             utils.writeToFile(jLinuxInfo.logLocation(), log.getLog());
             foundCommand = 1;
             /* break and exit */
-            break;
+            /* EDIT: changed breakt to System.exit because quit is no longer inside a loop */
+            System.exit(0);
              
         }
         if(c.toLowerCase().equals("ls")) {
@@ -735,6 +762,17 @@ public class main
             text.main(arg);
             foundCommand = 1;
         }
+        if(cmd.toLowerCase().equals("do")) {
+            foundCommand = 1;
+            Script s = new Script();
+            s.scrpt(arg);
+            try {
+                s.doRun();
+            } catch (IOException e) {
+                log.log("command 'do' ran into an IOExcption :(");
+                System.out.println("Error!");
+            }
+        }
         if(cmd.toLowerCase().equals("gui")) {
             if(arg.toLowerCase().equals("on")) {
                 jLinuxInfo.guiOn();
@@ -755,21 +793,6 @@ public class main
             }
             foundCommand = 1;
         }
-        /*if(cmd.toLowerCase().equals("angry")) {
-            if(arg.toLowerCase().equals("true")) {
-                angry.main(true);
-            } else if (arg.toLowerCase().equals("false")) {
-                angry.main(false);
-            } else {
-                System.out.println("Wrong arguments. Program angry accepts true or false");
-            }
-            foundCommand = 1;
-        }
-        */ 
-       /* remove angry code because it really doesn't work yet
-        * perhaps manual enabling/disabling via angry.jLinuxBoolean might work
-        * but for now, the angry command is not supported
-        */
         if(foundCommand == 0) { //if no command above matches
                 if(loadApp.run(c, baseDir, wd) == true) {
                     //do nothing, the program will run by itself
@@ -778,8 +801,5 @@ public class main
                     /* Do nothing. Loadapp will output an error message */
                 }
         }
-        }
-        System.exit(0); 
-        //when program execution finished, close safely
     }
 }

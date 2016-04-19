@@ -26,4 +26,9 @@ public class logThread implements Runnable
         Thread ltThread = new Thread(lt);
         ltThread.start();
     }
+    /* This method is for when a program wants to force jLinux to log immediately */
+    public static void forceLog() {
+         utils.writeToFile(jLinuxInfo.logLocation(), log.getLog());
+         log.clearLog();
+    }
 }

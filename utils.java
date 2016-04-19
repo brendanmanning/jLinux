@@ -49,19 +49,22 @@ public class utils
         }
         String tr = ""; //(String TO RETURN)
         try {
-            try {
+            /*try {
                 line = b.readLine();
             } catch (IOException e) {
                 
-            }
-            while(line != null) {
-                tr += line;
-                try {
+            }*/
+            while((line = b.readLine()) != null) {
+                tr += line + "\n";
+                /*try {
                     line = b.readLine();
                 } catch (IOException i) {
                     
-                }
+                }*/
             }
+        } catch (IOException ioe) {
+            log.log("Error in reading line");
+            System.out.println("Error");
         } finally {
             try {
                 b.close();
